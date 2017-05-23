@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <include file="Public:header"/>
+</head>
+<body>
+<!--面包屑导航 开始-->
+<div class="crumb_warp">
+    <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
+    <i class="fa fa-home"></i> <a href="#">首页</a> &raquo; <a href="{:U( 'Project/prolist' )}">在线项目列表</a>
+</div>
+<!--面包屑导航 结束-->
+
+<!--搜索结果页面 列表 开始-->
+<form action="#" method="post">
+    <div class="result_wrap">
+        <!--快捷导航 开始-->
+        <div class="result_content">
+            <div class="short_wrap">
+                <a href="{:U( 'Project/addpro' )}"><i class="fa fa-plus"></i>添加运营项目</a>
+                <!--<a href="#"><i class="fa fa-recycle"></i>批量删除</a>-->
+                <!--<a href="#"><i class="fa fa-refresh"></i>更新排序</a>-->
+            </div>
+        </div>
+        <!--快捷导航 结束-->
+    </div>
+
+    <div class="result_wrap">
+        <div class="result_content">
+            <table class="list_tab">
+                <tr>
+                    <!--<th class="tc" width="5%"><input type="checkbox" name=""></th>-->
+                    <!--<th class="tc">排序</th>-->
+                    <th class="tc">ID</th>
+                    <th>项目名字</th>
+                    <th>项目域名</th>
+                    <th>项目状态</th>
+                    <th>联系电话</th>
+                    <th>联系邮箱</th>
+                    <th>上线时间</th>
+                    <th>到期时间</th>
+                    <th>是否续期</th>
+                    <th>续费费用(元)</th>
+                    <th>邮件通知</th>
+                    <th>短信通知</th>
+                    <th>操作</th>
+                </tr>
+                <?php foreach( $pros as $vo ):?>
+                <tr>
+                    <td>{$vo['pro_id']}</td>
+                    <td>{$vo['pro_name']}</td>
+                    <td>{$vo['pro_domain']}</td>
+                    <td>
+                        <switch name="vo.pro_status">
+                            <case value="0">正常</case>
+                            <case value="1">即将到期</case>
+                            <case value="2">维护到期</case>
+                        </switch>
+                    </td>
+                    <td>{$vo['pro_phone']}</td>
+                    <td>{$vo['pro_email']}</td>
+                    <td>{$vo['pro_service_time']|date="Y-m-d H:i:s",###}</td>
+                    <td>{$vo['pro_end_time']|date="Y-m-d H:i:s",###}</td>
+                    <td>
+                        <switch name="vo.pro_renewal">
+                            <case value="">未过维护期</case>
+                            <case value="0">不续期</case>
+                            <case value="1">续期</case>
+                        </switch>
+                    </td>
+                    <td>{$vo['pro_service_cash']}</td>
+                    <td>{$vo['email_notice_num']}次</td>
+                    <td>{$vo['phone_notice_num']}次</td>
+                    <td class="hd-w200">
+                        <?php if( date('Y-m-d',time() ) == date( 'Y-m-d',$vo['isphone_notice_time'] ) ):?>
+                        <a href="javascript:;" style="color:#ccc;text-decoration: none;cursor: default;">Msg今天已通知</a>
+                        <?php else:?>
+                        <a href="javascript:sendphone({$vo['pro_id']});">短信</a>
+                        <?php endif;?>
+
+                        <?php if( date('Y-m-d',time() ) == date( 'Y-m-d',$vo['isemail_notice_time'] ) ):?>
+                        <a href="javascript:;" style="color:#ccc;text-decoration: none;cursor: default;">email今天已通知</a>
+                        <?php else:?>
+                        <a href="javascript:sendemail({$vo['pro_id']});">邮件</a>
+                        <?php endif;?>
+
+                        <a href="{:U( 'editpro',array( 'pro_id'=>$vo['pro_id'] ) )}">修改</a>
+
+                        <a href="javascript:del({$vo['pro_id']});">删除</a>
+                    </td>
+                </tr>
+                <?php endforeach;?>
+            </table>
+        </div>
+    </div>
+</form>
+<!--搜索结果页面 列表 结束-->
+
+
+
+</body>
+<script>
+    function del(pro_id) {
+        var pro_id = pro_id;
+        layer.confirm('你确定删除吗', {
+            btn: ['确认', '取消'] //按钮
+        }, function () {
+            $.post("{:U( 'Project/delpro' )}", {'pro_id': pro_id}, function (e) {
+                if (e.code == 0) {
+                    layer.msg(e.msg, {icon: 1});
+                    setTimeout(function () {
+                        location.href = location.href;
+                    }, 2000)
+
+                } else {
+                    if (e.info) {
+                        layer.alert(e.info, {icon: 2});
+                    } else {
+                        layer.alert(e.msg, {icon: 2});
+                    }
+                }
+            });
+        });
+    }
+
+    function sendphone(pro_id){
+        var pro_id = pro_id;
+        layer.confirm('你要短信通知用户服务即将到期？', {
+            btn: ['确认', '取消'] //按钮
+        }, function () {
+            $.post("{:U( 'Project/sendPhoneMsg' )}", {'pro_id': pro_id}, function (e) {
+                if (e.code == 0) {
+                    layer.msg(e.msg, {icon: 1});
+                    setTimeout(function () {
+                        location.href = location.href;
+                    }, 2000)
+
+                } else {
+                    if (e.info) {
+                        layer.alert(e.info, {icon: 2});
+                    } else {
+                        layer.alert(e.msg, {icon: 2});
+                    }
+                }
+            });
+        });
+    }
+
+    function sendemail(pro_id){
+        var pro_id = pro_id;
+        layer.confirm('你要邮件通知用户服务器即将到期？', {
+            btn: ['确认', '取消'] //按钮
+        }, function () {
+            $.post("{:U( 'Project/sendEmailMsg' )}", {'pro_id': pro_id}, function (e) {
+                if (e.code == 0) {
+                    layer.msg(e.msg, {icon: 1});
+                    setTimeout(function () {
+                        location.href = location.href;
+                    }, 2000)
+
+                } else {
+                    if (e.info) {
+                        layer.alert(e.info, {icon: 2});
+                    } else {
+                        layer.alert(e.msg, {icon: 2});
+                    }
+                }
+            });
+        });
+    }
+</script>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <include file="Public:header"/>
+</head>
+<body>
+
+<!--结果集标题与导航组件 开始-->
+<div class="result_wrap">
+    <div class="result_title">
+        <h3>快捷操作</h3>
+    </div>
+    <div class="result_content">
+        <div class="short_wrap">
+            <a href="{:U( 'Admin/adminlist' )}"><i class="fa fa-user"></i>管理员列表</a>
+            <a href="{:U( 'Group/grouplist' )}"><i class="fa fa-group"></i>用户权限组</a>
+            <a href="{:U( 'Group/addrule' )}"><i class="fa fa-cogs"></i>权限管理</a>
+        </div>
+    </div>
+</div>
+<!--结果集标题与导航组件 结束-->
+
+<!--当前操作框 开始-->
+<div class="search_wrap">
+	<table class="search_tab">
+		<tr>
+			<th></th>
+			<td>
+				<div>
+					<span style="font-size:26px;color:#2679B5;font-family: '黑体';">您当前操作：</span>
+					<span style="font-size:20px;color:#aaa;font-family: '黑体';">修改用户组名字</span>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+<!--当前操作框 结束-->
+
+<div class="result_wrap">
+    <!--搜索结果页面 列表 开始-->
+    <form action="" method="post">
+		<div class="search_wrap">
+			<table class="search_tab">
+				<tr>
+					<th width="100"></th>
+					<td></td>
+					<th width="100" style="font-size:18px;color:#999">用户组名:</th>
+					<input type="hidden" name="group_id" value="{$groupinfo['id']}">
+					<td><input type="text" name="title" value="{$groupinfo['title']}"></td>
+				</tr>
+			</table>
+		</div>
+		<div class="btn_group">
+			<input type="submit" value="保存">
+			<input type="button" class="back" onclick="history.go(-1)" value="返回">
+		</div>
+    </form>
+    <!--搜索结果页面 列表 结束-->
+</div>
+
+
+
+</body>
+</html>

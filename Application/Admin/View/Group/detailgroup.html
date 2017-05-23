@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="__PUBLIC__/org/jquery.min.js"></script>
+    <script src="__PUBLIC__/org/hdjs/hdjs.min.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/org/hdjs/hdjs.css">
+    <link rel="stylesheet" href="__PUBLIC__/org/bootstrap.min.css"></head>
+<body>
+<div class="hd-menu-list">
+    <ul>
+        <li>
+            <a href="{:U( 'Group/grouplist' )}">权限管理组列表</a>
+        </li>
+        <li  class="active">
+            <a href="{:U( 'Group/detailgroup',array( 'group_id'=>$detailgroup['id'] ) )}">权限组下规则明细</a>
+        </li>
+    </ul>
+</div>
+<form action="" method="post">
+    <table class="hd-table hd-table-form hd-form">
+        <thead>
+        <tr>
+            <td colspan="2">权限组下规则明细</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th class="hd-w200">权限管理组名字：</th>
+            <td class="hd-h50">
+                {$detailgroup['title']}
+            </td>
+        </tr>
+        <tr>
+            <th class="hd-w200">权限规则：</th>
+            <td class="hd-h50">
+                <?php foreach( $detailgroup['rule'] as $vo ):?>
+                <label class="checkbox-inline" style="font-size:14px;">
+                    <input type="checkbox" name="id[]" value="{$vo['id']}" style="" disabled checked>{$vo['title']}
+                </label>
+                <?php endforeach;?>
+            </td>
+        </tr>
+
+        <tr>
+            <th class="hd-w200"></th>
+            <td>
+                <!--<button type="submit" class="btn btn-success" style="border:0;">提交</button>-->
+                <a href="javascript:;" onClick="javascript:history.back(-1);" class="btn btn-info" style="border:0;">返回</a>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+</body>
+</html>

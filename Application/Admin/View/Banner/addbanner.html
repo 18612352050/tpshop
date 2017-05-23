@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<include file="Public:header"/>
+</head>
+<body>
+<!--面包屑导航 开始-->
+<div class="crumb_warp">
+	<!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
+	<i class="fa fa-home"></i> <a href="#">首页</a> &raquo; <a href="{:U( 'Banner/bannerlist' )}">Banner列表</a> &raquo; 新增Banner
+</div>
+<!--面包屑导航 结束-->
+
+<!--结果集标题与导航组件 开始-->
+<div class="result_wrap">
+	<div class="result_title">
+		<h3>快捷操作</h3>
+	</div>
+	<div class="result_content">
+		<div class="short_wrap">
+			<a href="{:U( 'Banner/addbanner' )}"><i class="fa fa-plus"></i>新增Banner</a>
+		</div>
+	</div>
+</div>
+<!--结果集标题与导航组件 结束-->
+
+<div class="result_wrap">
+	<form action="" method="post">
+		<table class="add_tab">
+			<tbody>
+			<!--<tr>-->
+				<!--<th width="120"><i class="require">*</i>分类：</th>-->
+				<!--<td>-->
+					<!--<select name="nav_pid">-->
+						<!--<option value="">==请选择==</option>-->
+						<!--<option value="0">=顶级导航=</option>-->
+						<!--< ?php foreach( $navs as $vo ):?>-->
+						<!--<option value="{$vo['nav_id']}">{$vo['_nav_name']}</option>-->
+						<!--< ?php endforeach;?>-->
+					<!--</select>-->
+				<!--</td>-->
+			<!--</tr>-->
+			<tr>
+				<th>Banner标题：</th>
+				<td>
+					<input type="text" name="ban_title">
+					<span><i class="fa fa-exclamation-circle yellow"></i>有标题名称可以填写，无可不填</span>
+				</td>
+			</tr>
+			<tr>
+				<th>Banner链接：</th>
+				<td>
+					<input type="text" class="lg" name="ban_rec_link" value="http://">
+					<span><i class="fa fa-exclamation-circle yellow"></i>网站Banner跳转链接以http://开头</span>
+				</td>
+			</tr>
+
+
+			<tr>
+				<th><i class="require">*</i>Banner上传：</th>
+				<td>
+					<style type="text/css">
+						#mainpre{margin-right:20px;}
+						div#mainpre img {width: 300px;height: 150px;}
+						.fileup{background:lightseagreen;border-radius: 5px;height:30px;line-height:30px;padding:0 10px;}
+					</style>
+					<div id='mainpre'style=""></div>
+					<span id="up-btn" class="btn btn-success fileinput-button btn-sm fileup" style="">
+						<input type="thumb">
+						<i class="fa fa-plus" style="color:#fff"></i>
+						<span style="color:#fff;margin-left:-5px;">上传Banner图</span>
+						<!-- 上传按钮 -->
+						<input id="mainfileupload" type="file" name="">
+					</span>
+					<!-- 上传成功文件显示区 -->
+					<div id="mainfiles" class="files"></div>
+					<link rel="stylesheet" href="__PUBLIC__/org/uploadify/css/jquery.fileupload.css">
+					<script src="__PUBLIC__/org/uploadify/js/vendor/jquery.ui.widget.js"></script>
+					<script src="__PUBLIC__/org/uploadify/js/jquery.iframe-transport.js"></script>
+					<script src="__PUBLIC__/org/uploadify/js/jquery.fileupload.js"></script>
+					<script>
+						$(function () {
+							var url = "{:U('Banner/webUpBan')}";
+							$('#mainfileupload').fileupload({
+								url: url,
+								dataType: 'json',
+								done: function (e, res) {
+									if( res.result.status == 2 ){
+										layer.alert( res.result.msg, {icon: 2});
+										return;
+									}
+									if( res.result.status == 1 ){
+										//显示上传成功的缩略图
+										var html = "<div class='001' style='position:relative;width:300px;float:left;margin-right:35px;margin-bottom: 15px;'>" +
+												"<img src='" + res.result.datas + "'/>" +
+												"<input type='hidden' class='yuantu' name='ban_url' value='" + res.result.datas + "'>" +
+												"<span onclick='delPic(this)' style='background:rgba( 0,0,0,0.3 );text-align: center;cursor:pointer;position: absolute;top:0;right:0px;'>" +
+													'<i class="fa fa-times-circle" style="color:#fff;font-size:28px;margin-top: 5px;margin-left:5px;"></i></span>' +
+												"</div>";
+										$("#mainpre").append(html);
+										$( "#up-btn" ).hide();
+										$("#ban_url").val(res.result.datas);
+									}
+								}
+							})
+						});
+
+						function delPic(obj) {
+							var dizhi = $('.yuantu').val();
+							$.post("{:U('Banner/deleteAddBanImg')}", {'pic': dizhi}, function (data) {
+								if (data.code == 1) {
+									$(obj).parents('.001').eq(0).remove();
+									$("#ban_url").val( '' );
+									$( "#up-btn" ).show();
+								}
+								else {
+									alert('网络延时，稍后再试！');
+								}
+							});
+							return false;
+						}
+					</script>
+				</td>
+			</tr>
+
+			<tr>
+				<th>导航排序：</th>
+				<td>
+					<input type="text" style="width:30px;text-align: center;" name="ban_order" value="0">
+					<span><i class="fa fa-exclamation-circle yellow"></i>导航排序方便调整导航位置，默认0</span>
+				</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td>
+					<input type="button" onclick="_banSubFromCheck()" value="提交">
+					<input type="button" class="back" onclick="history.go(-1)" value="返回">
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+
+</body>
+<script>
+	//监听表单元素是否填写，自定义方法  开始
+	function _banSubFromCheck(){
+		var banUrl = $( "input[name='ban_url']" ).val();
+		if( undefined === banUrl ){
+			layer.msg( '请上传banner图');
+			return false;
+		}
+		$( "form" ).submit();
+	}
+	//监听表单元素是否填写，自定义方法  结束
+</script>
+</html>

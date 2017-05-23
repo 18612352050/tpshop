@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<include file="Public:header"/>
+</head>
+<body>
+<!--面包屑导航 开始-->
+<div class="crumb_warp">
+	<!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
+	<i class="fa fa-home"></i> <a href="#">首页</a> &raquo; <a href="{:U('Help/Helplist')}">文章列表</a> &raquo; 编辑文章
+</div>
+<!--面包屑导航 结束-->
+
+<!--结果集标题与导航组件 开始-->
+<div class="result_wrap">
+	<div class="result_title">
+		<h3>快捷操作</h3>
+	</div>
+	<div class="result_content">
+		<div class="short_wrap">
+			<a href="{:U('Help/addart')}"><i class="fa fa-plus"></i>添加文章</a>
+			<a href="{:U('Help/editart',array( 'cate_sitename'=>'chuanbo','art_id'=>$art['art_id'] ))}"><i class="fa fa-edit"></i>编辑文章</a>
+		</div>
+	</div>
+</div>
+<!--结果集标题与导航组件 结束-->
+
+<div class="result_wrap">
+	<form action="" method="post">
+		<input type="hidden" name="art_id" value="{$art['art_id']}">
+		<table class="add_tab">
+			<tbody>
+			<tr>
+				<th width="120"><i class="require">*</i>选择栏目：</th>
+				<td>
+					<select name="cate_id">
+						<option value="">=请选择=</option>
+						<?php foreach( $cates as $vo ):?>
+							<option value="{$vo['cate_id']}" <?php if( $art['cate_id'] == $vo['cate_id'] ){echo 'selected';}?> >{$vo['cate_name']}</option>
+						<?php endforeach;?>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th><i class="require">*</i>文章标题：</th>
+				<td>
+					<input type="text" class="lg" name="art_title" value="{$art['art_title']}" required>
+					<span><i class="fa fa-exclamation-circle yellow"></i>栏目标题</span>
+				</td>
+			</tr>
+			<tr>
+				<th>文章seo关键词：</th>
+				<td>
+					<input type="text" class="lg" name="art_keywords" value="{$art['art_keywords']}" required>
+					<span><i class="fa fa-exclamation-circle yellow"></i>文章seo关键词,请用英文“,”号分隔</span>
+				</td>
+			</tr>
+			<tr>
+				<th>文章seo描述：</th>
+				<td>
+					<textarea style="float:left;margin-right:8px;" name="art_description" required>{$art['art_description']}</textarea>
+					<span><i class="fa fa-exclamation-circle yellow"></i>文章seo描述</span>
+				</td>
+			</tr>
+			<tr>
+				<th>文章来源：</th>
+				<td>
+					<input type="text" name="art_editor" value="{$art['art_editor']}">
+					<span><i class="fa fa-exclamation-circle yellow"></i>填写作者或者来源</span>
+				</td>
+			</tr>
+			<tr>
+				<th>文章内容：</th>
+				<td>
+					<script type="text/javascript" charset="utf-8" src="__PUBLIC__/org/ueditor/ueditor.config.js"></script>
+					<script type="text/javascript" charset="utf-8" src="__PUBLIC__/org/ueditor/ueditor.all.min.js"></script>
+					<script type="text/javascript" charset="utf-8" src="__PUBLIC__/org/ueditor/lang/zh-cn/zh-cn.js"></script>
+					<style>
+						.edui-default{line-height: 28px;}
+						div.edui-combox-body,div.edui-button-body,div.edui-splitbutton-body{
+							overflow: hidden;height:20px;
+						}
+						div.edui-box{overflow: hidden;height: 22px;}
+					</style>
+					<script type="text/javascript">
+						$(document).ready(function(){
+							var ue = UE.getEditor('editor');
+						})
+					</script>
+					<script id="editor" name="art_content" type="text/plain" style="width:900px;height:400px;">{$art['art_content']}</script>
+				</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td>
+					<input type="button" onclick="_artSubFromCheck()" value="确认修改">
+					<input type="button" class="back" onclick="history.go(-1)" value="返回">
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+
+</body>
+<script>
+	//监听表单元素是否填写，自定义方法  开始
+	function _artSubFromCheck(){
+		var cateId = $( "select[name='cate_id']" ).val();
+		if( cateId.length == 0 ){
+			layer.msg( '请选择选择栏目');
+			return false;
+		}
+		var artName = $( "input[name='art_title']" ).val();
+		if( artName == '' ){
+			layer.msg( '请填写文章标题');
+			return false;
+		}
+		$( "form" ).submit();
+	}
+	//监听表单元素是否填写，自定义方法  结束
+</script>
+</html>

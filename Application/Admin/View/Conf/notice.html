@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <include file="Public:header"/>
+</head>
+<body>
+<!--面包屑导航 开始-->
+<div class="crumb_warp">
+    <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
+    <i class="fa fa-home"></i> <a href="#">首页</a> &raquo; <a href="{:U('Conf/notice')}">提醒管理</a>
+</div>
+<!--面包屑导航 结束-->
+<div id="result_wrap" style="margin-left: 10px;">
+
+    <div class="short_wrap" style="margin:20px 10px;"><b style="font-size: 20px">系统提醒:</b></div>
+    <table class="list_tab">
+        <tbody>
+            <tr>
+                <th  width="50%">提醒类型</th>
+                <th>发送方式</th>
+            </tr>
+            <foreach name="sys" item="vs">
+                <tr>
+                    <td>{$vs['title']}</td>
+                    <td class="btn_min">
+                        <a class="icon-pencil red" href="{:U('Conf/noticeEdit',array('style'=>'weixin','key_id'=>$vs['key_id'],'obje'=>'0'))}"> 微信</a>
+                        <a class="icon-pencil red" href="{:U('Conf/noticeEdit',array('style'=>'email','key_id'=>$vs['key_id'],'obje'=>'0'))}"> 邮件</a>
+                        <a class="icon-pencil red" href="{:U('Conf/noticeEdit',array('style'=>'sms','key_id'=>$vs['key_id'],'obje'=>'0'))}"> 短信</a>
+                    </td>
+                </tr>
+            </foreach>
+
+        </tbody>
+    </table>
+
+
+    <div class="short_wrap" style="margin:20px 10px;"><b style="font-size: 20px">用户提醒:</b></div>
+    <table class="list_tab">
+        <tbody><tr>
+            <th width="50%">提醒类型</th>
+            <th>发送方式</th>
+        </tr>
+        <foreach name="user" item="vu">
+            <tr>
+                <td>{$vu['title']}</td>
+                <td class="btn_min">
+                    <a class="icon-pencil red" href="{:U('Conf/noticeEdit',array('style'=>'sms','key_id'=>$vu['key_id'],'obje'=>'1'))}"> 短信</a>
+                </td>
+            </tr>
+        </foreach>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

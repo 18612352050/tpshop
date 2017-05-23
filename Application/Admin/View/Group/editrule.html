@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <include file="Public:header"/>
+</head>
+<body>
+
+<!--结果集标题与导航组件 开始-->
+<div class="result_wrap">
+    <div class="result_title">
+        <h3>快捷操作</h3>
+    </div>
+    <div class="result_content">
+        <div class="short_wrap">
+            <a href="{:U( 'Admin/adminlist' )}"><i class="fa fa-user"></i>管理员列表</a>
+            <a href="{:U( 'Group/grouplist' )}"><i class="fa fa-group"></i>用户权限组</a>
+            <a href="{:U( 'Group/addrule' )}"><i class="fa fa-cogs"></i>权限管理</a>
+        </div>
+    </div>
+</div>
+<!--结果集标题与导航组件 结束-->
+
+<!--当前操作框 开始-->
+<div class="search_wrap">
+	<table class="search_tab">
+		<tr>
+			<th></th>
+			<td>
+				<div>
+					<span style="font-size:26px;color:#2679B5;font-family: '黑体';">您当前操作：</span>
+					<span style="font-size:20px;color:#aaa;font-family: '黑体';">修改权限信息</span>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+<!--当前操作框 结束-->
+
+<div class="result_wrap">
+	<div class="result_title error_con">
+    </div>
+    <form action="#" method="post">
+		<input type="hidden" name="id" value="{$ruleinfo['id']}">
+		<input type="hidden" name="old_rule_pid" value="{$ruleinfo['rule_pid']}">
+        <table class="add_tab">
+            <tbody>
+            <tr>
+                <th>父级权限：</th>
+                <td>
+                    <select name="rule_pid" id="">
+                        <option value="0">=== 默认顶级 ===</option>
+                        <?php foreach( $parentRules as $vo ):?>
+                        <option value="{$vo['id']}" <?php if( $vo['id'] == $ruleinfo['rule_pid'] ){echo 'selected';}?> >{$vo['title']}</option>
+                        <?php endforeach;?>
+                    </select>
+                    <span><i class="fa fa-exclamation-circle yellow">所属分类</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th>名字：</th>
+                <td>
+                    <input type="text" name="title" value="{$ruleinfo['title']}">
+                    <span><i class="fa fa-exclamation-circle yellow">权限名字</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th>标识：</th>
+                <td>
+                    <input type="text" name="name" value="{$ruleinfo['name']}">
+                    <span><i class="fa fa-exclamation-circle yellow">控制器/方法</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th>排序：</th>
+                <td>
+                    <input type="text" name="rule_order" value="{$ruleinfo['rule_order']}">
+                    <span><i class="fa fa-exclamation-circle yellow">排序     </i></span>
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <td>
+                    <input type="button" id="sub" value="提交">
+                    <input type="button" class="back" onclick="history.go(-1)" value="返回">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+</body>
+<!--判断脚本 开始-->
+<script>
+    $( "#sub" ).click(function(){
+        var html = '';
+        var title = $( "input[name='title']" ).val();
+        var name = $( "input[name='name']" ).val();
+        //名字不能为空
+        if( !title ){
+            html = "<div class='mark'><p>";
+            html += "权限名字不能为空";
+            html += "</p></div>";
+            $( ".error_con" ).html( html );
+            return false;
+        }
+        //控制器/方法不能为空
+        if( !name ){
+            html = "<div class='mark'><p>";
+            html += "控制器/方法不能为空";
+            html += "</p></div>";
+            $( ".error_con" ).html( html );
+            return false;
+        }
+        $( 'form' ).submit();
+    })
+</script>
+<!--判断脚本 结束-->
+
+</html>

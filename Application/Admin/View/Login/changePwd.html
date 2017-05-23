@@ -1,0 +1,112 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+	<!--<meta charset="utf-8">-->
+	<!--<script src="__PUBLIC__/org/jquery.min.js"></script>-->
+	<!--<script src="__PUBLIC__/org/hdjs/hdjs.min.js"></script>-->
+	<!--<link rel="stylesheet" href="__PUBLIC__/org/hdjs/hdjs.css">-->
+	<!--<link rel="stylesheet" href="__PUBLIC__/org/bootstrap.min.css"></head>-->
+<!--<body>-->
+	<!--<form method="post" >-->
+		<!--<table class="hd-table hd-table-form hd-form">-->
+			<!--<thead>-->
+				<!--<tr>-->
+					<!--<td colspan="2">修改管理员密码</td>-->
+				<!--</tr>-->
+			<!--</thead>-->
+			<!--<tbody>-->
+		<!--<input type="hidden" name="id" value="{$_SESSION['id']}">-->
+				<!--<tr>-->
+					<!--<th class="hd-w200">原密码</th>-->
+					<!--<td>-->
+						<!--<input type="password" name="old_password">-->
+					<!--</td>-->
+				<!--</tr>-->
+				<!--<tr>-->
+					<!--<th class="hd-w200">新密码</th>-->
+					<!--<td>-->
+						<!--<input type="password" name="password">-->
+					<!--</td>-->
+				<!--</tr>-->
+				<!---->
+				<!--<tr>-->
+					<!--<th class="hd-w200">重新输入新密码</th>-->
+					<!--<td>			-->
+						<!--<input type="password" name="password_c">-->
+					<!--</td>-->
+				<!--</tr>-->
+				<!--<tr>-->
+					<!--<th class="hd-w200"></th>-->
+					<!--<td>-->
+						<!--<button type="submit" class="btn btn-success" style="border:0;">确认修改</button>			-->
+						<!--<a href="javascript:;" onClick="javascript:history.back(-1);" class="btn btn-info" style="border:0;">返回</a>-->
+					<!--</td>-->
+				<!--</tr>-->
+			<!--</tbody>-->
+		<!--</table>-->
+		<!---->
+	<!--</form>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<include file="Public:header"/>
+</head>
+<body>
+<!--面包屑导航 开始-->
+<div class="crumb_warp">
+	<!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
+	<i class="fa fa-home"></i> <a href="#">首页</a> &raquo; 修改密码
+</div>
+<!--面包屑导航 结束-->
+
+<!--结果集标题与导航组件 开始-->
+<div class="result_wrap">
+	<div class="result_title">
+		<h3>修改密码</h3>
+	</div>
+</div>
+<!--结果集标题与导航组件 结束-->
+
+<div class="result_wrap">
+	<form method="post">
+		<input type="hidden" name="id" value="{$_SESSION['auth']['uid']}">
+		<table class="add_tab">
+			<tbody>
+			<tr>
+				<th width="120"><i class="require">*</i>原密码：</th>
+				<td>
+					<input type="password" name="old_password"> </i>请输入原始密码</span>
+				</td>
+			</tr>
+			<tr>
+				<th><i class="require">*</i>新密码：</th>
+				<td>
+					<input type="password" name="password"> </i>新密码6-20位</span>
+				</td>
+			</tr>
+			<tr>
+				<th><i class="require">*</i>确认密码：</th>
+				<td>
+					<input type="password" name="password_c"> </i>再次输入密码</span>
+				</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td>
+					<input type="submit" value="提交">
+					<input type="button" class="back" onclick="history.go(-1)" value="返回">
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+</body>
+</html>

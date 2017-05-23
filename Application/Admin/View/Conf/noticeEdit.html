@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <include file="Public:header"/>
+</head>
+<body>
+<!--面包屑导航 开始-->
+<div class="crumb_warp">
+    <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
+    <i class="fa fa-home"></i> <a href="#">首页</a> &raquo; 栏目列表
+</div>
+<!--面包屑导航 结束-->
+
+<div class="result_wrap">
+    <form action="" method="post">
+        <input type="hidden" name="id" value="{$field['id']}">
+        <if condition="$field['style'] eq 'weixin' ">
+            <table class="add_tab">
+                <tbody>
+                <tr>
+                    <th width="120"><i class="require">*</i>提醒类型：</th>
+                    <td>
+                        <label>{$field['title']}</label>
+                    </td>
+                </tr>
+                <tr>
+                    <th><i class="require">*</i>发送方式：</th>
+                    <td>
+                        <label>微信</label>
+                    </td>
+                </tr>
+                <tr>
+                    <th><i class="require">*</i>接收者：</th>
+                    <td>
+                        <label><input name="tousers" type="text" value="{$field['tousers']}" pattern="required" alt="" inform="0"></label>
+                        <span><i class="fa fa-exclamation-circle yellow"></i>微信的OpenId 接收者可以是多个，不同接收者之间用","分隔）</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th><i class="require">*</i>模板ID：</th>
+                    <td>
+                        <input name="template_id" type="text" value="{$field['template_id']}" pattern="required" alt="模板ID不能为空!" inform="0">
+                    </td>
+                </tr>
+                <tr>
+                    <th><i class="require">*</i>开启状态：</th>
+                    <td>
+                        <input name="status" type="radio" value="1" <?php if($field['status']==1) echo 'checked'; ?> ><label>开启</label>
+                        <input name="status" type="radio" value="0" <?php if($field['status']==0) echo 'checked'; ?> ><label>关闭</label>
+                    </td>
+                </tr>
+                <tr>
+                    <th><i class="require">*</i>说明：</th>
+                    <td>
+                        <label>{$field['note']}</label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th></th>
+                    <td>
+                        <input type="button" onclick="_cateSubFromCheck()" value="提交">
+                        <input type="button" class="back" onclick="history.go(-1)" value="返回">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <elseif condition="$field['style'] eq 'email' " />
+                <table class="add_tab">
+                    <tbody>
+                    <tr>
+                        <th width="120"><i class="require">*</i>提醒类型：</th>
+                        <td>
+                            <label>{$field['title']}</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><i class="require">*</i>发送方式：</th>
+                        <td>
+                            <label>邮件发送</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><i class="require">*</i>接收者：</th>
+                        <td>
+                            <label><input name="tousers" type="text" value="{$field['tousers']}" pattern="required" alt="" inform="0"></label>
+                            <span><i class="fa fa-exclamation-circle yellow"></i>邮箱地址 接收者可以是多个，不同接收者之间用","分隔</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><i class="require">*</i>模板ID：</th>
+                        <td>
+                            <input name="template_id" type="text" value="{$field['template_id']}" pattern="required" alt="模板ID不能为空!" inform="0">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><i class="require">*</i>开启状态：</th>
+                        <td>
+                            <input name="status" type="radio" value="1" <?php if($field['status']==1) echo 'checked'; ?> ><label>开启</label>
+                            <input name="status" type="radio" value="0" <?php if($field['status']==0) echo 'checked'; ?> ><label>关闭</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><i class="require">*</i>模板内容：</th>
+                        <td>
+                            <textarea name="template" style="width:700px;height:200px;" inform="0">{$field['template']}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><i class="require">*</i>说明：</th>
+                        <td>
+                            <label>{$field['note']}</label>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th></th>
+                        <td>
+                            <input type="button" onclick="_cateSubFromCheck()" value="提交">
+                            <input type="button" class="back" onclick="history.go(-1)" value="返回">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <else />
+                <table class="add_tab">
+                    <tbody>
+                    <tr>
+                        <th width="120"><i class="require">*</i>提醒类型：</th>
+                        <td>
+                            <label>{$field['title']}</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><i class="require">*</i>发送方式：</th>
+                        <td>
+                            <label>短信</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><i class="require">*</i>接收者：</th>
+                        <td>
+                            <label><input name="tousers" type="text" value="{$field['tousers']}" pattern="required" alt="" inform="0"></label>
+                            <span><i class="fa fa-exclamation-circle yellow"></i>手机号码 接收者可以是多个，不同接收者之间用","分隔</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><i class="require">*</i>模板ID：</th>
+                        <td>
+                            <input name="template_id" type="text" value="{$field['template_id']}" pattern="required" alt="模板ID不能为空!" inform="0">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><i class="require">*</i>开启状态：</th>
+                        <td>
+                            <input name="status" type="radio" value="1" <?php if($field['status']==1) echo 'checked'; ?> ><label>开启</label>
+                            <input name="status" type="radio" value="0" <?php if($field['status']==0) echo 'checked'; ?> ><label>关闭</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><i class="require">*</i>说明：</th>
+                        <td>
+                            <label>{$field['note']}</label>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th></th>
+                        <td>
+                            <input type="button" onclick="_cateSubFromCheck()" value="提交">
+                            <input type="button" class="back" onclick="history.go(-1)" value="返回">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+        </if>
+
+    </form>
+</div>
+
+</body>
+<script>
+    //监听表单元素是否填写，自定义方法  开始
+    function _cateSubFromCheck(){
+        var tousers = $( "input[name='tousers']" ).val();
+        if( tousers == '' ){
+            layer.alert( '接受者id不能为空', {icon: 2});
+            return false;
+        }
+        var template_id = $( "input[name='template_id']" ).val();
+        if( template_id.length === 0 ){
+            layer.alert( '模板id不能为空', {icon: 2});
+            return false;
+        }
+        var style = "{$field['style']}";
+        if( style == 'email' ){
+            var template = $( "textarea[name='template']" ).val();
+            if( template.length === 0 ){
+                layer.alert( '模板内容不能为空', {icon: 2});
+                return false;
+            }
+        }
+        $( "form" ).submit();
+    }
+</script>
+</html>

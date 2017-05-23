@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <include file="Public:header"/>
+
+</head>
+<body>
+<!--面包屑导航 开始-->
+<div class="crumb_warp">
+    <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
+    <i class="fa fa-home"></i> <a href="#">首页</a> &raquo; <a href="{:U( 'Project/prolist' )}">在线项目运营列表</a> &raquo; 新增项目信息
+</div>
+<!--面包屑导航 结束-->
+
+<!--结果集标题与导航组件 开始-->
+<div class="result_wrap">
+    <div class="result_title">
+        <h3>快捷操作</h3>
+    </div>
+    <div class="result_content">
+        <div class="short_wrap">
+            <a href="{:U( 'Project/addpro' )}"><i class="fa fa-plus"></i>新增项目信息</a>
+        </div>
+    </div>
+</div>
+<!--结果集标题与导航组件 结束-->
+
+<div class="result_wrap">
+    <form action="" method="post">
+        <table class="add_tab">
+            <tbody>
+            <tr>
+                <th><i class="require">*</i>项目名字：</th>
+                <td>
+                    <input type="text" name="pro_name">
+                    <span><i class="fa fa-exclamation-circle yellow">请填写项目名字</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="require">*</i>续费费用(单位：元)：</th>
+                <td>
+                    <input type="text" name="pro_service_cash" class="sm">
+                    <span><i class="fa fa-exclamation-circle yellow">请填写项目续费费用，现在不填写，可以后期进行修改填写</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="require">*</i>项目域名：</th>
+                <td>
+                    <input type="text" name="pro_domain">
+                    <span><i class="fa fa-exclamation-circle yellow">请填写项目域名</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="require">*</i>联系人名字：</th>
+                <td>
+                    <input type="text" name="pro_cname">
+                    <span><i class="fa fa-exclamation-circle yellow">请填写项目联系人名字</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="require">*</i>联系人电话：</th>
+                <td>
+                    <input type="text" name="pro_phone">
+                    <span><i class="fa fa-exclamation-circle yellow">请填写项目联系人电话</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="require">*</i>联系人邮箱：</th>
+                <td>
+                    <input type="text" name="pro_email">
+                    <span><i class="fa fa-exclamation-circle yellow">请填写项目联系人邮箱</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="require">*</i>项目上线时间：</th>
+                <td>
+                    <input type="text" name="pro_service_time" readonly="readonly" id="pro_service_time">
+                    <script>
+                        $(function () {
+                            $('#pro_service_time').calendar({format: 'yyyy/MM/dd HH:mm:ss'});
+                        })
+                    </script>
+                    <span><i class="fa fa-exclamation-circle yellow">请填写项目上线时间</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="require">*</i>项目维护到期时间：</th>
+                <td>
+                    <input type="text" readonly="readonly" id="pro_end_time" name="pro_end_time">
+                    <script>
+                        $(function () {
+                            $('#pro_end_time').calendar({format: 'yyyy/MM/dd HH:mm:ss'});
+                        })
+                    </script>
+                    <span><i class="fa fa-exclamation-circle yellow">请填写项目维护到期时间</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <td>
+                    <input type="submit" value="提交">
+                    <input type="button" class="back" onclick="history.go(-1)" value="返回">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+</body>
+</html>

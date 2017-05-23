@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <include file="Public:header"/>
+</head>
+<body>
+<!--面包屑导航 开始-->
+<div class="crumb_warp">
+    <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
+    <i class="fa fa-home"></i> <a href="#">首页</a> &raquo; <a href="{:U('Article/articlelist')}">文章列表</a>
+</div>
+<!--面包屑导航 结束-->
+
+<!--搜索结果页面 列表 开始-->
+<form action="#" method="post">
+    <div class="result_wrap">
+        <!--快捷导航 开始-->
+        <div class="result_content">
+            <div class="short_wrap">
+                <a href="{:U('Article/addart')}"><i class="fa fa-plus"></i>新增文章</a>
+            </div>
+        </div>
+        <!--快捷导航 结束-->
+    </div>
+
+    <div class="result_wrap">
+        <div class="result_content">
+            <table class="list_tab">
+                <tr>
+                    <th class="tc">ID</th>
+                    <th>所属栏目</th>
+                    <th>文章标题</th>
+                    <th>发表时间</th>
+                    <th>文章来源</th>
+                    <th>审核状态</th>
+                    <th>审核时间</th>
+                    <th>审核人</th>
+                    <th>操作</th>
+                </tr>
+                <?php foreach( $list as $vo ):?>
+                <tr>
+                    <td class="tc">{$vo['art_id']}</td>
+                    <td>
+                        <?php foreach( $cates as $vc ):?>
+                            <?php if( $vc['cate_id'] == $vo['cate_id'] ) echo $vc['cate_name'] ?>
+                        <?php endforeach;?>
+                    </td>
+                    <td>
+                        {$vo['art_title']}
+                    </td>
+                    <td>
+                        {$vo['art_time']|date="Y-m-d H:i",###}
+                    </td>
+                    <td>
+                        {$vo['art_editor']}
+                    </td>
+                    <td>
+                        <switch name="vo.art_status">
+                            <case value="">未知状态</case>
+                            <case value="0">待审核</case>
+                            <case value="1">通过审核</case>
+                            <case value="2">不通过审核</case>
+                            <defalut />未知状态
+                        </switch>
+                    </td>
+                    <td>
+                        {$vo['art_audit_time']|default=""|date="Y-m-d H:i",###}
+                    </td>
+                    <td>
+                        {$vo['art_auditor']}
+                    </td>
+                    <td>
+                        <a href="{:U( 'editart',array( 'art_id'=>$vo['art_id'] ) )}">修改</a>
+                        <a href="javascript:del({$vo['art_id']});">删除</a>
+                    </td>
+                </tr>
+                <?php endforeach;?>
+            </table>
+        </div>
+    </div>
+</form>
+<!--搜索结果页面 列表 结束-->
+
+
+
+</body>
+<script>
+    function del(art_id)
+    {
+        var art_id = art_id;
+        layer.confirm('你确定删除吗', {
+            btn: ['确认','取消'] //按钮
+        }, function(){
+            $.post( "{:U( 'Article/delart' )}",{'art_id':art_id},function(e){
+                if( e.code==0 ){
+                    layer.msg(e.msg, {icon: 1});
+                    setTimeout(function(){
+                        location.href = location.href;
+                    },2000)
+                }else{
+                    if( e.info ){
+                        layer.alert( e.info, {icon: 2} );
+                    }else{
+                        layer.alert( e.msg, {icon: 2} );
+                    }
+                }
+            });
+
+        });
+    }
+</script>
+</html>

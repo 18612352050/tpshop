@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <include file="Public:header"/>
+
+</head>
+<body>
+<!--面包屑导航 开始-->
+<div class="crumb_warp">
+    <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
+    <i class="fa fa-home"></i> <a href="#">首页</a> &raquo; <a href="{:U( 'Admin/adminlist' )}">管理员列表</a> &raquo; 修改管理员信息
+</div>
+<!--面包屑导航 结束-->
+
+<!--错误提示区域开始-->
+<div class="result_title" style="margin:10px 0;">
+
+</div>
+<!--错误提示区域 结束-->
+
+<div class="result_wrap">
+    <form id="addAdminForm" action="" method="post">
+        <input type="hidden" name="id" value="{$info['id']}">
+        <table class="add_tab">
+            <tbody>
+            <tr>
+                <th>所属用户权限组：</th>
+                <td>
+                    <select name="group_id" id="">
+                        <option value="0" <?php if( $group_id == '0' ){echo 'selected';}?>>=== 请选择用户组 ===</option>
+                        <?php foreach( $groups as $vo ):?>
+                        <option value="{$vo['id']}" <?php if( $group_id == $vo['id'] ){echo 'selected';}?> >{$vo['title']}</option>
+                        <?php endforeach;?>
+                    </select>
+                    <span><i class="fa fa-exclamation-circle yellow">可以选择用户分组</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="require">*</i>登录用户名：</th>
+                <td>
+                    <input type="text" name="username" value="{$info['username']}" disabled style="cursor: not-allowed;">
+                    <span><i class="fa fa-exclamation-circle yellow">请填写登录用户名</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <td>
+                    <input type="button" id="sub" value="提交">
+                    <input type="button" class="back" onclick="history.go(-1)" value="返回">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+</body>
+<!--判断脚本 开始-->
+<script>
+    $( "#sub" ).click(function(){
+        var html = '';
+        var group_id = $( "select[name='group_id']" ).val();
+
+        //登录用户名不能为空
+        if( group_id == '0' ){
+            html = "<div class='mark'><p>";
+            html += "请选择所属用户组";
+            html += "</p></div>";
+            $( ".result_title" ).html( html );
+            return false;
+        }
+        $( '#addAdminForm' ).submit();
+    })
+</script>
+<!--判断脚本 结束-->
+
+</html>

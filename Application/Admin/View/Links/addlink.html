@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<include file="Public:header"/>
+</head>
+<body>
+<!--面包屑导航 开始-->
+<div class="crumb_warp">
+	<!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
+	<i class="fa fa-home"></i> <a href="#">首页</a> &raquo; <a href="{:U( 'Links/linklist' )}">友情连接列表</a> &raquo; 新增友情连接
+</div>
+<!--面包屑导航 结束-->
+
+<!--结果集标题与导航组件 开始-->
+<div class="result_wrap">
+	<div class="result_title">
+		<h3>快捷操作</h3>
+	</div>
+	<div class="result_content">
+		<div class="short_wrap">
+			<a href="{:U( 'Links/addlink' )}"><i class="fa fa-plus"></i>新增友情连接</a>
+		</div>
+	</div>
+</div>
+<!--结果集标题与导航组件 结束-->
+
+<div class="result_wrap">
+	<form action="" method="post">
+		<table class="add_tab">
+			<tbody>
+			<tr>
+				<th><i class="require">*</i>友情链接名字：</th>
+				<td>
+					<input type="text" name="link_name">
+					<span><i class="fa fa-exclamation-circle yellow"></i>填写友情连接名字，用于页面显示</span>
+				</td>
+			</tr>
+			<tr>
+				<th><i class="require">*</i>友情链接：</th>
+				<td>
+					<input type="text" class="lg" name="link_url" value="http://">
+					<span><i class="fa fa-exclamation-circle yellow"></i>网站友情连接以http://开头</span>
+				</td>
+			</tr>
+			<tr>
+				<th>友情链接：</th>
+				<td>
+					<input type="text" style="width:30px;text-align: center;" name="link_order" value="0">
+					<span><i class="fa fa-exclamation-circle yellow"></i>友情链接排序方便调整友情链接位置，默认0</span>
+				</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td>
+					<input type="submit" value="提交">
+					<input type="button" class="back" onclick="history.go(-1)" value="返回">
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+
+</body>
+</html>

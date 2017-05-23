@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="__PUBLIC__/org/jquery.min.js"></script>
+    <script src="__PUBLIC__/org/hdjs/hdjs.min.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/org/hdjs/hdjs.css">
+    <link rel="stylesheet" href="__PUBLIC__/org/bootstrap.min.css"></head>
+<body>
+
+<form action="" method="post">
+    <input type="hidden" name="user_id" value="{$users['user_id']}">
+    <table class="hd-table hd-table-form hd-form">
+        <thead>
+        <tr>
+            <td colspan="2">新增用户信息</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th class="hd-w200">新增用户名：</th>
+            <td>
+                <input type="text" name="username" value="{$users['username']}" disabled>
+            </td>
+        </tr>
+        <tr>
+            <th class="hd-w200">用户单位：</th>
+            <td>
+                <input type="text" name="userlocation" value="{$users['userlocation']}">
+            </td>
+        </tr>
+        <tr>
+            <th class="hd-w200">用户密码:</th>
+            <td>
+                <input type="password" name="password" value=""><span style="color:red;">* 重置密码：填写新密码</span>
+            </td>
+        </tr>
+        <tr>
+            <th class="hd-w200">确认用户密码:</th>
+            <td>
+                <input type="password" name="password_c" value=""><span style="color:red;">* 重置密码：确认新密码</span>
+            </td>
+        </tr>
+        <tr>
+            <th class="hd-w200"></th>
+            <td>
+                <button type="submit" class="btn btn-success" style="border:0;">提交</button>
+                <a href="javascript:;" onClick="javascript:history.back(-1);" class="btn btn-info" style="border:0;">返回</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="__PUBLIC__/org/jquery.min.js"></script>
+    <script src="__PUBLIC__/org/hdjs/hdjs.min.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/org/hdjs/hdjs.css">
+    <link rel="stylesheet" href="__PUBLIC__/org/bootstrap.min.css"></head>
+<body>
+<div class="hd-menu-list">
+    <ul>
+        <li >
+            <a href="{:U( 'Admin/adminlist' )}">管理员角色列表</a>
+        </li>
+        <li class="active">
+            <a href="{:U( 'Admin/cutadmingroup',array( 'admin_id'=>$adminUser['id'] ) )}">删减角色权限</a>
+        </li>
+    </ul>
+</div>
+<form action="" method="post">
+    <input type="hidden" name="uid" value="{$adminUser['id']}">
+    <table class="hd-table hd-table-form hd-form">
+        <thead>
+        <tr>
+            <td colspan="2">添加新规则节点</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th class="hd-w200 hd-h50">管理员角色：</th>
+            <td>
+                {$adminUser['username']}
+            </td>
+        </tr>
+        <tr>
+            <th class="hd-w200 hd-h50">请选择不需要权限组：</th>
+            <td>
+
+                <select onchange="checkGroup()" name="group_id" style="font-size:14px;">
+                    <option value="">==请选择此角色要删减的权限==</option>
+                    <?php foreach( $ruleGroup as $vo ):?>
+                    <option value="{$vo['id']}">{$vo['title']}</option>
+                    <?php endforeach;?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th class="hd-w200 hd-h50">权限组具体规则：</th>
+            <td class="checkBox">
+            </td>
+        </tr>
+        <tr>
+            <th class="hd-w200"></th>
+            <td>
+                <button type="submit" class="btn btn-success" style="border:0;">删减此权限组</button>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+</body>
+<script>
+    //初始化规则
+    var html = '<label class="checkbox-inline">请选择权限组查看细节</label>';
+    $(function(){
+        $('.checkBox').html(html);
+    });
+
+    //拉下选择看到明细
+    function checkGroup(){
+        var group_id = $("[name='group_id']").val();
+        if(group_id == ''){
+            $('.checkBox').html(html);
+        }else{
+            $.get("{:U('Group/getListGroup')}",{group_id:group_id},function(d){
+                $('.checkBox').html(d);
+            },'html');
+        }
+    }
+
+</script>
+</html>

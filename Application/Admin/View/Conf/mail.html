@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <include file="Public:header"/>
+</head>
+<body>
+<!--面包屑导航 开始-->
+<div class="crumb_warp">
+    <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
+    <i class="fa fa-home"></i> <a href="#">首页</a> &raquo; 栏目列表
+</div>
+<!--面包屑导航 结束-->
+
+<div class="result_wrap">
+    <form action="" method="post">
+        <input type="hidden" name="id" value="1">
+        <table class="add_tab">
+            <tbody>
+            <tr>
+                <th width="120"><i class="require">*</i>邮件发送方式：</th>
+                <td>
+                    <select name="type">
+                        <option value="1" <?php if($conf['type']==1){ echo 'selected'; } ?> >SMTP</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="require">*</i>SMTP地址：</th>
+                <td>
+                    <input type="text" name="smtp_address" value="{$conf['smtp_address']}"  required>
+                    <span><i class="fa fa-exclamation-circle yellow"></i>发送邮箱的smtp地址。如: smtp.gmail.com或smtp.qq.com</span>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="require">*</i>启用SSL连接：</th>
+                <td>
+                    <label><input type="radio" name="is_ssl" value="1" <?php if($conf['is_ssl']==1){ echo 'checked'; } ?>  >是 &nbsp;</label>
+                    <label><input type="radio" name="is_ssl" value="0" <?php if($conf['is_ssl']==0){ echo 'checked'; } ?>  >否 &nbsp;</label>
+                    <span><label style="color:red;">*</label>此选项需要服务器环境支持SSL（如果使用Gmail或QQ邮箱，请选择是,其他选择否）</span>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="require">*</i>端口：</th>
+                <td>
+                    <input type="text" name="port" required value="{$conf['port']}">
+                    <span><i class="fa fa-exclamation-circle yellow"></i>smtp的端口。默认为25。具体请参看各STMP服务商的设置说明 （如果使用Gmail或QQ邮箱，请将端口设为465）</span>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="require">*</i>邮箱地址：</th>
+                <td>
+                    <input type="text" name="e_address" value="{$conf['e_address']}" required>
+                    <span><i class="fa fa-exclamation-circle yellow"></i>邮箱地址请输入完整地址email@email.com格式</span>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="require">*</i>邮箱密码：</th>
+                <td>
+                    <input type="text" name="e_password" value="{$conf['e_password']}" required>
+                    <span><i class="fa fa-exclamation-circle yellow"></i>邮箱密码</span>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="require">*</i>发送者姓名：</th>
+                <td>
+                    <input type="text" name="e_name" value="{$conf['e_name']}" required>
+                    <span><i class="fa fa-exclamation-circle yellow"></i>发送者姓名</span>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="require">*</i>测试收件地址：</th>
+                <td>
+                    <input type="text" name="test_address" value="{$conf['test_address']}" required>
+                    <span><i class="fa fa-exclamation-circle yellow"></i>收件邮箱地址</span>
+                    <!--<button onclick="sendTest()">发送测试</button>-->
+                    <a href="javascript:sendTest();">发送测试</a>
+                    <span><i class="fa fa-exclamation-circle yellow"></i>请提交之后在进行测试</span>
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <td>
+                    <input type="button" onclick="_cateSubFromCheck()" value="提交">
+                    <input type="button" class="back" onclick="history.go(-1)" value="返回">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+</body>
+<script>
+    //监听表单元素是否填写，自定义方法  开始
+    function _cateSubFromCheck(){
+        var type = $( "select[name='type']" ).val();
+        if( type.length === 0 ){
+            layer.alert( '邮件发送方式不能为空', {icon: 2});
+            return false;
+        }
+        var stmp_address = $( "input[name='stmp_address']" ).val();
+        if( stmp_address == '' ){
+            layer.alert( 'smtp地址不能为空', {icon: 2});
+            return false;
+        }
+        var port = $( "input[name='port']" ).val();
+        if( port.length === 0 ){
+            layer.alert( '端口不能为空', {icon: 2});
+            return false;
+        }
+        var e_address = $( "input[name='e_address']" ).val();
+        if( e_address.length === 0 ){
+            layer.alert( '邮箱地址不能为空', {icon: 2});
+            return false;
+        }
+        var e_password = $( "input[name='e_password']" ).val();
+        if( e_password.length === 0 ){
+            layer.alert( '邮箱密码不能为空', {icon: 2});
+            return false;
+        }
+        var e_name = $( "input[name='e_name']" ).val();
+        if( e_name.length === 0 ){
+            layer.alert( '发送者姓名不能为空', {icon: 2});
+            return false;
+        }
+
+        $( "form" ).submit();
+    }
+    //监听表单元素是否填写，自定义方法  结束
+    //发送测试邮件
+    function sendTest(){
+        var test_address = $( "input[name='test_address']" ).val();
+        if( test_address.length === 0 ){
+            layer.alert( '测试收件地址不能为空', {icon: 2});
+            return false;
+        }
+        layer.confirm('你确定要发送测试邮件到test_address吗', {
+            btn: ['确认','取消'] //按钮
+        }, function(){
+            $.post( "{:U( 'Conf/sendMailTest' )}",{'sendto':test_address},function(e){
+                if( e.code==0 ){
+                    layer.msg(e.msg, {icon: 1});
+                    setTimeout(function(){
+                        location.href = location.href;
+                    },2000)
+
+                }else{
+                    if( e.info ){
+                        layer.alert( e.info, {icon: 2} );
+                    }else{
+                        layer.alert( e.msg, {icon: 2} );
+                    }
+                }
+            });
+
+        });
+    }
+</script>
+</html>

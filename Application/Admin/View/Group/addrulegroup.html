@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <include file="Public:header"/>
+
+</head>
+<body>
+<!--面包屑导航 开始-->
+<div class="crumb_warp">
+    <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
+    <i class="fa fa-home"></i> <a href="#">首页</a> &raquo; <a href="{:U( 'Group/grouplist' )}">用户权限组</a> &raquo; 新增用户权限组
+</div>
+<!--面包屑导航 结束-->
+
+<!--错误提示区域开始-->
+<div class="result_title" style="margin:10px 0;">
+
+</div>
+<!--错误提示区域 结束-->
+
+<div class="result_wrap">
+    <form id="form1" action="" method="post">
+        <table class="add_tab">
+            <tbody>
+            <tr>
+                <th><i class="require">*</i>用户组名：</th>
+                <td>
+                    <input type="text" name="title">
+                    <span><i class="fa fa-exclamation-circle yellow">请填写用户权限组名字</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th>规则设置：</th>
+                <td>
+                    <span><i class="fa fa-exclamation-circle yellow" style="color:#CC0033;font-size:13px;"> 设置规则请在用户组列表页进行规则配置</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <td>
+                    <input type="button" id="sub" value="提交">
+                    <input type="button" class="back" onclick="history.go(-1)" value="返回">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+</body>
+<!--判断用户名是否为空的脚本 开始-->
+<script>
+    $( "#sub" ).click(function(){
+        var html = '';
+        var title = $( "input[name='title']" ).val();
+        if( !title ){
+            html = "<div class='mark'><p>";
+            html += "用户组名不能为空";
+            html += "</p></div>";
+            $( ".result_title" ).html( html );
+            return false;
+        }
+        $( '#form1' ).submit();
+    })
+</script>
+<!--判断用户名是否为空的脚本 结束-->
+</html>

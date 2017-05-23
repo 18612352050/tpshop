@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <include file="Public:header"/>
+</head>
+<body>
+<!--面包屑导航 开始-->
+<div class="crumb_warp">
+    <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
+    <i class="fa fa-home"></i> <a href="#">首页</a> &raquo; <a href="{:U('Conf/loglist')}">操作记录</a>
+</div>
+<!--面包屑导航 结束-->
+
+<!--结果页快捷搜索框 开始-->
+<!--<div class="search_wrap">-->
+    <!--<form action="" method="get">-->
+        <!--<table class="search_tab">-->
+            <!--<tr>-->
+                <!--<th width="120">分站列表:</th>-->
+                <!--<td>-->
+                    <!--<select name="site">-->
+                        <!--<option value="">请选择</option>-->
+                        <!--<option value="yingshi" < ?php if( $site=='yingshi' ){echo 'selected';}else{echo '';}?>>星客影视</option>-->
+                        <!--<option value="wangluo" < ?php if( $site=='wangluo' ){echo 'selected';}else{echo '';}?>>星客网络</option>-->
+                        <!--<option value="chuanbo" < ?php if( $site=='chuanbo' ){echo 'selected';}else{echo '';}?>>星客传播</option>-->
+                        <!--<option value="guanggao" < ?php if( $site=='guanggao' ){echo 'selected';}else{echo '';}?>>星客广告</option>-->
+                    <!--</select>-->
+                <!--</td>-->
+                <!--<th width="70">标题:</th>-->
+                <!--<td><input type="text" name="title" value="{$title}" placeholder="关键字"></td>-->
+                <!--<td><input type="submit" value="查询"></td>-->
+            <!--</tr>-->
+        <!--</table>-->
+    <!--</form>-->
+<!--</div>-->
+<!--结果页快捷搜索框 结束-->
+
+<!--搜索结果页面 列表 开始-->
+<form action="#" method="post">
+    <div class="result_wrap">
+        <div class="result_content">
+            <table class="list_tab">
+                <tr>
+                    <th class="tc" width="5%"><input type="checkbox"></th>
+                    <th class="tc" width="3%">ID</th>
+                    <th>帐号名</th>
+                    <th>ip</th>
+                    <th>信息</th>
+					<th>功能名</th>
+                    <th>时间</th>
+                    <!--<th>操作</th>-->
+                </tr>
+                <?php foreach( $list as $vo ):?>
+                <tr>
+                    <td class="tc"><input type="checkbox" name="log_id[]" value="{$vo['log_id']}"></td>
+                    <td class="tc">{$vo['log_id']}</td>
+                    <td>
+						{$vo['log_desc']['operator']}
+                    </td>
+                    <td>
+                        {$vo['log_desc']['ip']}
+                    </td>
+                    <td>
+                        {$vo['log_desc']['msg']}
+                    </td>
+					<td>
+                        {$vo['log_desc']['func_name']}【{$vo['log_desc']['func']}】
+                    </td>
+                    <td>
+                        {$vo['log_desc']['time']|date="Y-m-d H:i:s",###}
+                    </td>
+                    <!--<td>-->
+                        <!--<a href="javascript:del({$vo['art_id']});">删除</a>-->
+                    <!--</td>-->
+                </tr>
+                <?php endforeach;?>
+            </table>
+            <div class="page_nav">
+                {$page}
+				<!--<a href="javascript:_batchDel();"><i class="fa fa-recycle"></i>批量删除</a>-->
+            </div>
+
+
+        </div>
+    </div>
+</form>
+<!--搜索结果页面 列表 结束-->
+
+
+
+</body>
+<script>
+    function del(art_id)
+    {
+        var art_id = art_id;
+        layer.confirm('你确定删除吗', {
+            btn: ['确认','取消'] //按钮
+        }, function(){
+            $.post( "{:U( 'Article/delart' )}",{'art_id':art_id},function(e){
+                if( e.code==0 ){
+                    layer.msg(e.msg, {icon: 1});
+                    setTimeout(function(){
+                        location.href = location.href;
+                    },2000)
+                }else{
+                    if( e.info ){
+                        layer.alert( e.info, {icon: 2} );
+                    }else{
+                        layer.alert( e.msg, {icon: 2} );
+                    }
+                }
+            });
+
+        });
+    }
+	/**
+	 * 单条更新文章发布时间
+	 * @param art_time	[原来的发布时间]
+	 * @param art_id	[文章的ID]
+	 * @private			[私有自定义方法]
+	 */
+	function _changeArtTime( art_time,art_id ) {
+		if( art_time != $("#"+art_id).val() ) {
+			$.post( "{:U( 'Article/changeArtTime' )}",{'art_id':art_id,'art_time':$("#"+art_id).val()},function(data){
+				if( data.code == 0 ){
+					layer.alert( data.msg, {icon: 1} );
+				}else{
+					if( data.info ){
+						layer.alert( data.info, {icon: 2} );
+					}else{
+						layer.alert( data.msg, {icon: 2} );
+					}
+
+				}
+			});
+		} else {
+			layer.msg( "请重新选择发布文章的时间再来更新" );
+		}
+	}
+	/**
+	 * 批量更新文章发布日期
+	 * @returns {boolean}
+	 * @private
+	 */
+	function _batchUpdate() {
+		//定义新数组
+		var _artId = new Array();
+		var _artTime = new Array();
+		//遍历处理选中的数据
+		$('.list_tab').find( 'td' ).find("input[type='checkbox']:checked").each(function(i){
+				_artId[i] = $(this).val();
+				_artTime[i] = $( "#" + $(this).val() ).val();
+		});
+		if ( _artId.length == 0 ) {
+			layer.alert( '请选择并更改好日期，再点击批量更新',{icon: 2});
+			return false;
+		} else {
+			$.post( "{:U( 'Article/batchUpdate' )}",{_artId,_artTime},function(data){
+				if( data.code == 0 ){
+					layer.alert( data.msg );
+					setTimeout(function(){
+                        location.href = location.href;
+                    },1500)
+				}else{
+					if( data.info ){
+						layer.alert( data.info, {icon: 2} );
+					}else{
+						layer.alert( data.msg, {icon: 2} );
+					}
+
+				}
+			});
+		}
+	}
+	/**
+	 * 批量删除文章
+	 * @returns {boolean}
+	 * @private
+	 */
+	function _batchDel() {
+		//定义新数组
+		var _artId = new Array();
+		//遍历处理选中的数据
+		$('.list_tab').find( 'td' ).find("input[type='checkbox']:checked").each(function(i){
+				_artId[i] = $(this).val();
+		});
+		if ( _artId.length == 0 ) {
+			layer.alert( "没有删除项",{icon: 2});
+			return false;
+		} else {
+			layer.confirm('你确定删除选中项目文章？', {
+				btn: ['确认','取消'] //按钮
+			}, function(){
+				$.post( "{:U( 'Article/batchDel' )}",{_artId},function(data){
+					if( data.code == 0 ){
+						layer.alert( data.msg );
+						setTimeout(function(){
+							location.href = location.href;
+						},1500)
+					}else{
+						if( data.info ){
+							layer.alert( data.info, {icon: 2} );
+						}else{
+							layer.alert( data.msg, {icon: 2} );
+						}
+
+					}
+				});
+			});
+		}
+	}
+</script>
+</html>

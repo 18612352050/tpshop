@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <include file="Public:header"/>
+</head>
+<body>
+<!--面包屑导航 开始-->
+<div class="crumb_warp">
+    <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
+    <i class="fa fa-home"></i> <a href="#">首页</a> &raquo; <a href="{:U( 'Conf/index' )}">网站配置</a>
+</div>
+<!--面包屑导航 结束-->
+
+<!--搜索结果页面 列表 开始-->
+
+    <div class="result_wrap">
+        <!--快捷导航 开始-->
+        <div class="result_content">
+            <div class="short_wrap">
+                <a href="{:U( 'Conf/createConf' )}"><i class="fa fa-plus"></i>添加配置</a>
+            </div>
+        </div>
+        <!--快捷导航 结束-->
+    </div>
+<form action="{:U( 'Conf/changeContent' )}" method="post">
+    <div class="result_wrap">
+        <div class="result_content">
+            <table class="list_tab">
+                <tr>
+                    <th class="tc" width="5%">ID</th>
+                    <th>名称</th>
+                    <th>标题</th>
+                    <th>内容</th>
+                    <th>操作</th>
+                </tr>
+                <?php foreach( $confs as $vo ):?>
+                <tr>
+                    <td class="tc">
+                        <input type="hidden" name="conf_id[]" value="{$vo['conf_id']}">
+                        {$vo['conf_id']}
+                    </td>
+                    <td>
+                        {$vo['conf_name']}
+                    </td>
+                    <td>
+                        {$vo['conf_title']}
+                    </td>
+                    <td>
+                        {$vo['_html']}
+                    </td>
+                    <td>
+                        <a href="{:U('Conf/editConf',array('conf_id'=>$vo['conf_id']))}">修改</a>
+                        <a onclick="del( {$vo['conf_id']} )" href="javascript:;">删除</a>
+                    </td>
+                </tr>
+                <?php endforeach;?>
+            </table>
+            <div class="btn_group">
+                <input type="submit" value="保存配置">
+            </div>
+        </div>
+    </div>
+</form>
+<!--搜索结果页面 列表 结束-->
+
+
+
+</body>
+<script>
+    //删除栏目使用
+    function del(conf_id) {
+        var conf_id = conf_id;
+        var url = "{:U( 'Conf/destroy' )}";
+        layer.confirm('你确定删除吗', {
+            btn: ['确认','取消'] //按钮
+        }, function(){
+            $.post( url,{'conf_id':conf_id},function(e){
+                if( e.code==0 ){
+                    layer.msg(e.msg, {icon: 1});
+                    setTimeout(function(){
+                        location.href = location.href;
+                    },2000)
+
+                }else{
+                    if( e.info ){
+                        layer.alert( e.info, {icon: 2} );
+                    }else{
+                        layer.alert( e.msg, {icon: 2} );
+                    }
+                }
+            });
+
+        });
+    }
+</script>
+<script type="text/javascript">
+    jQuery.fn.limit = function () {
+        var self = $("td[limit]");
+        self.each(function () {
+            var objString = $(this).text();
+            var objLength = $(this).text().length;
+            var num = $(this).attr("limit");
+            // console.log(num);
+            if (objLength > num) {
+                $(this).attr("title", objString);
+                objString = $(this).text(objString.substring(0, num) + "...");
+            }
+        })
+    }
+    $(function () {
+        $(document.body).limit();
+
+    })
+</script>
+</html>

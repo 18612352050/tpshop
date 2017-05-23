@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<include file="Public:header"/>
+</head>
+<body>
+<!--面包屑导航 开始-->
+<div class="crumb_warp">
+	<i class="fa fa-home"></i> <a href="#">首页</a> &raquo; <a href="{:U( 'Navs/navlist' )}">导航列表</a> &raquo; 新增导航
+</div>
+<!--面包屑导航 结束-->
+
+<!--结果集标题与导航组件 开始-->
+<div class="result_wrap">
+	<div class="result_title">
+		<h3>快捷操作</h3>
+	</div>
+	<div class="result_content">
+		<div class="short_wrap">
+			<a href="{:U( 'Navs/addnav' )}"><i class="fa fa-plus"></i>新增导航</a>
+		</div>
+	</div>
+</div>
+<!--结果集标题与导航组件 结束-->
+
+<div class="result_wrap">
+	<form action="" method="post">
+		<table class="add_tab">
+			<tbody>
+			<tr>
+				<th width="120"><i class="require">*</i>分类：</th>
+				<td>
+					<select name="nav_pid">
+						<option value="">==请选择==</option>
+						<option value="0">=顶级导航=</option>
+						<?php foreach( $navs as $vo ):?>
+						<option value="{$vo['nav_id']}">{$vo['_nav_name']}</option>
+						<?php endforeach;?>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th><i class="require">*</i>导航名字：</th>
+				<td>
+					<input type="text" name="nav_name">
+				</td>
+			</tr>
+			<tr>
+				<th>导航链接：</th>
+				<td>
+					<input type="text" class="lg" name="nav_url" value="http://">
+					<span><i class="fa fa-exclamation-circle yellow"></i>网站导航连接以http://开头</span>
+				</td>
+			</tr>
+			<tr>
+				<th>导航排序：</th>
+				<td>
+					<input type="text" style="width:30px;text-align: center;" name="nav_order" value="0">
+					<span><i class="fa fa-exclamation-circle yellow"></i>导航排序方便调整导航位置，默认0</span>
+				</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td>
+					<input type="button" onclick="_navSubFromCheck()" value="提交">
+					<input type="button" class="back" onclick="history.go(-1)" value="返回">
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+
+</body>
+
+<script>
+	//监听表单元素是否填写，自定义方法  开始
+	function _navSubFromCheck(){
+		var navPid = $( "select[name='nav_pid']" ).val();
+		if( navPid.length === 0 ){
+			layer.alert( '请选择导航分级', {icon: 2});
+			return false;
+		}
+		var navName = $( "input[name='nav_name']" ).val();
+		if( navName == '' ){
+			layer.alert( '请选择导航名字', {icon: 2});
+			return false;
+		}
+		$( "form" ).submit();
+	}
+	//监听表单元素是否填写，自定义方法  结束
+</script>
+</html>

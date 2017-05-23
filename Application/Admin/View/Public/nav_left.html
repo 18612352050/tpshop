@@ -1,0 +1,63 @@
+<style>
+    .nav_left_li{position:relative;}
+    .nav_li_span{position:absolute;top:8px;right:13px;min-width:10px;border-radius:50%;padding:2px 6px;background: #f36a09;color:#fff;text-align: center;}
+</style>
+<div class="menu_box">
+    <ul>
+        <li>
+            <h3><i class="fa fa-fw fa-clipboard"></i>内容管理</h3>
+            <ul class="sub_menu">
+                <li><a href="{:U( 'Navs/navlist' )}" target="main"><i class="fa fa-fw fa-dashboard"></i>导航管理</a></li>
+                <li><a href="{:U( 'Banner/bannerlist' )}" target="main"><i class="fa fa-fw fa-image"></i>Banner管理</a></li>
+                <li><a href="{:U( 'Category/catelist' )}" target="main"><i class="fa fa-fw fa-bars"></i>文章栏目管理</a></li>
+                <li><a href="{:U( 'Article/articlelist' )}" target="main"><i class="fa fa-fw fa-file-word-o"></i>文章管理</a></li>
+                <li><a href="{:U( 'HelpCate/catelist' )}" target="main"><i class="fa fa-fw fa-bars"></i>帮助中心栏目管理</a></li>
+                <li><a href="{:U( 'Help/Helplist' )}" target="main"><i class="fa fa-fw fa-file-word-o"></i>帮助中心管理</a></li>
+                <li><a href="{:U( 'Tags/taglist' )}" target="main"><i class="fa fa-fw fa-file-word-o"></i>标签管理</a></li>
+                <!--<li><a href="{:U( 'Article/auditart' )}" target="main"><i class="fa fa-fw fa-file-text"></i>文件审核</a></li>-->
+            </ul>
+        </li>
+        <li>
+            <h3><i class="fa fa-fw fa-desktop"></i>项目进度管理</h3>
+            <ul class="sub_menu">
+                <li><a href="{:U('Project/prolist')}" target="main"><i class="fa fa-fw fa-bar-chart-o"></i>运行项目列表</a></li>
+                <li class="nav_left_li"><a href="{:U('Project/lastpro')}" target="main"><i class="fa fa-fw fa-calendar"></i>即将到期项目</a><span class="nav_li_span">{$_SESSION['prosum']|default="0"}</span></li>
+                <li class="nav_left_li"><a href="{:U('Project/outpro')}" target="main"><i class="fa fa-fw fa-retweet"></i>到期项目</a><span class="nav_li_span">{$_SESSION['outpro']|default="0"}</span></li>
+                <li class="nav_left_li"><a href="{:U('Project/recyclepro')}" target="main"><i class="fa fa-fw fa-trash-o"></i>项目回收站</a><span class="nav_li_span">{$_SESSION['recoverypro']|default="0"}</span></li>
+            </ul>
+        </li>
+        <li>
+            <h3><i class="fa fa-fw fa-cog"></i>系统设置</h3>
+            <ul class="sub_menu">
+                <li><a href="{:U('Conf/index')}" target="main"><i class="fa fa-fw fa-cubes"></i>网站配置</a></li>
+                <li><a href="{:U('Conf/mail')}" target="main"><i class="fa fa-fw fa-cubes"></i>邮箱配置</a></li>
+                <li><a href="{:U('Conf/notice')}" target="main"><i class="fa fa-fw fa-cubes"></i>提醒管理</a></li>
+                <li><a href="{:U('Links/linklist')}" target="main"><i class="fa fa-fw fa-unlink"></i>友情连接</a></li>
+                <li><a href="{:U( 'Conf/loglist' )}" target="main"><i class="fa fa-fw fa-tags"></i>操作记录</a></li>
+            </ul>
+        </li>
+        <li>
+            <h3><i class="fa fa-fw fa-group"></i>管理设置</h3>
+            <ul class="sub_menu">
+                <li><a href="{:U( 'Admin/adminlist' )}" target="main"><i class="fa fa-fw fa-user"></i>管理员列表</a></li>
+                <li><a href="{:U( 'Group/grouplist' )}" target="main"><i class="fa fa-fw fa-group"></i>用户权限组</a></li>
+                <li><a href="{:U( 'Group/addrule' )}" target="main"><i class="fa fa-fw fa-cogs"></i>权限管理</a></li>
+            </ul>
+        </li>
+		<li>
+			<h3><i class="fa fa-fw fa-database"></i>备份还原</h3>
+			<ul class="sub_menu">
+				<li><a href="{:U( 'DataBase/export' )}" target="main"><i class="fa fa-fw fa-cubes"></i>数据备份</a></li>
+				<li><a href="{:U( 'DataBase/import' )}" target="main"><i class="fa fa-fw fa-retweet"></i>数据还原</a></li>
+			</ul>
+		</li>
+        <!--<li>-->
+            <!--<h3><i class="fa fa-fw fa-thumb-tack"></i>工具导航</h3>-->
+            <!--<ul class="sub_menu">-->
+                <!--<li><a href="http://www.yeahzan.com/fa/facss.html" target="main"><i class="fa fa-fw fa-font"></i>图标调用</a></li>-->
+                <!--<li><a href="http://hemin.cn/jq/cheatsheet.html" target="main"><i class="fa fa-fw fa-chain"></i>Jquery手册</a></li>-->
+                <!--<li><a href="http://tool.c7sky.com/webcolor/" target="main"><i class="fa fa-fw fa-tachometer"></i>配色板</a></li>-->
+            <!--</ul>-->
+        <!--</li>-->
+    </ul>·
+</div>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <include file="Public:header"/>
+
+</head>
+<body>
+<!--面包屑导航 开始-->
+<div class="crumb_warp">
+    <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
+    <i class="fa fa-home"></i> <a href="#">首页</a> &raquo; <a href="{:U( 'Admin/adminlist' )}">管理员列表</a> &raquo; 新增管理员
+</div>
+<!--面包屑导航 结束-->
+
+<!--错误提示区域开始-->
+<div class="result_title" style="margin:10px 0;">
+
+</div>
+<!--错误提示区域 结束-->
+
+<div class="result_wrap">
+    <form id="addAdminForm" action="" method="post">
+        <table class="add_tab">
+            <tbody>
+            <tr>
+                <th>所属用户权限组：</th>
+                <td>
+                    <select name="group_id" id="">
+                        <option value="0">=== 请选择用户组 ===</option>
+                        <?php foreach( $groups as $vo ):?>
+                        <option value="{$vo['id']}">{$vo['title']}</option>
+                        <?php endforeach;?>
+                    </select>
+                    <span><i class="fa fa-exclamation-circle yellow">可以选择用户分组</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="require">*</i>登录用户名：</th>
+                <td>
+                    <input type="text" name="username">
+                    <span><i class="fa fa-exclamation-circle yellow">请填写登录用户名</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="require">*</i>用户密码：</th>
+                <td>
+                    <input type="password" name="password">
+                    <span><i class="fa fa-exclamation-circle yellow">请输入密码，6位以上较佳</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="require">*</i>确认密码：</th>
+                <td>
+                    <input type="password" name="password_c">
+                    <span><i class="fa fa-exclamation-circle yellow">请再次输入密码</i></span>
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <td>
+                    <input type="button" id="sub" value="提交">
+                    <input type="button" class="back" onclick="history.go(-1)" value="返回">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+</body>
+<!--判断脚本 开始-->
+<script>
+    $( "#sub" ).click(function(){
+        var html = '';
+        var username = $( "input[name='username']" ).val();
+        var password = $( "input[name='password']" ).val();
+        var password_c = $( "input[name='password_c']" ).val();
+        //登录用户名不能为空
+        if( !username ){
+            html = "<div class='mark'><p>";
+            html += "登录用户名不能为空";
+            html += "</p></div>";
+            $( ".result_title" ).html( html );
+            return false;
+        }
+        //密码不能为空
+        if( !password ){
+            html = "<div class='mark'><p>";
+            html += "密码不能为空";
+            html += "</p></div>";
+            $( ".result_title" ).html( html );
+            return false;
+        }
+        //密码长度请是6位数以上
+        if( password.length < 6 ){
+            html = "<div class='mark'><p>";
+            html += "密码长度请大于6位";
+            html += "</p></div>";
+            $( ".result_title" ).html( html );
+            return false;
+        }
+        //确认密码不能为空
+        if( !password_c ){
+            html = "<div class='mark'><p>";
+            html += "确认密码不能为空";
+            html += "</p></div>";
+            $( ".result_title" ).html( html );
+            return false;
+        }
+        //两次密码不一样
+        if( password != password_c ){
+            html = "<div class='mark'><p>";
+            html += "两次密码不相同";
+            html += "</p></div>";
+            $( ".result_title" ).html( html );
+            return false;
+        }
+        $( '#addAdminForm' ).submit();
+    })
+</script>
+<!--判断脚本 结束-->
+
+</html>

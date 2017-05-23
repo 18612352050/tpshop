@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <include file="Public:header"/>
+</head>
+<body>
+
+<!--结果集标题与导航组件 开始-->
+<div class="result_wrap">
+    <div class="result_title">
+        <h3>快捷操作</h3>
+    </div>
+    <div class="result_content">
+        <div class="short_wrap">
+            <a href="{:U( 'Admin/adminlist' )}"><i class="fa fa-user"></i>管理员列表</a>
+            <a href="{:U( 'Group/grouplist' )}"><i class="fa fa-group"></i>用户权限组</a>
+            <a href="{:U( 'Group/addrule' )}"><i class="fa fa-cogs"></i>权限管理</a>
+        </div>
+    </div>
+</div>
+<!--结果集标题与导航组件 结束-->
+
+<!--当前操作框 开始-->
+<div class="search_wrap">
+	<table class="search_tab">
+		<tr>
+			<th></th>
+			<td>
+				<div>
+					<span style="font-size:26px;color:#2679B5;font-family: '黑体';">您当前操作：</span>
+					<span style="font-size:20px;color:#aaa;font-family: '黑体';">配置权限</span>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+<!--当前操作框 结束-->
+
+<div class="result_wrap">
+    <!--搜索结果页面 列表 开始-->
+    <form action="" method="post">
+		<div class="search_wrap">
+			<table class="search_tab">
+				<tr>
+					<th width="100"></th>
+					<td></td>
+					<th width="100" style="font-size:18px;color:#999">用户组名:</th>
+					<input type="hidden" name="group_id" value="{$groupinfo['id']}">
+					<td><input type="text" name="title" value="{$groupinfo['title']}"></td>
+				</tr>
+			</table>
+		</div>
+        <div class="result_wrap" style="border:0">
+            <div class="result_content">
+				<div>
+					<div class="tc" width="10%" style="padding-left:10px;background:#F4F8FB;width:100%;text-align: left;height:50px;line-height: 50px;font-family: '黑体';">
+						<input id="allcheckbox" onclick="_chooseAll( this )" type="checkbox">&nbsp;<label for="allcheckbox">权限全选</label>
+					</div>
+				</div>
+                <table class="add_tab">
+					<?php foreach( $parentRules as $rule ):?>
+					<tr style="background:#f9f9f9;">
+						<th style="padding-left: 25px;text-align: left;">
+							<label><input onclick="_chooseLine(this)" type="checkbox" name="rule_title[]" value="{$rule['id']}"> {$rule['title']}</label>
+						</th>
+                    </tr>
+                    <tr>
+						<td style="padding-left: 50px;">
+							<?php foreach( $rules as $vo ):?>
+								<?php if( $vo['rule_pid'] == $rule['id'] ):?>
+									<label>
+										<input onclick="_chooseSign( this )" type="checkbox" name="rule_id[]" value="{$vo['id']}"
+										<?php if( in_array( $vo['id'],$groupinfo['rules'] ) ){echo 'checked';} ?> > {$vo['title']}
+									</label>
+								<?php endif;?>
+							<?php endforeach;?>
+						</td>
+                    </tr>
+					<?php endforeach;?>
+                </table>
+            </div>
+			<div class="btn_group">
+                <input type="submit" value="保存">
+				<input type="button" class="back" onclick="history.go(-1)" value="返回">
+            </div>
+        </div>
+    </form>
+    <!--搜索结果页面 列表 结束-->
+</div>
+
+
+
+</body>
+<script>
+	//全选按钮
+	function _chooseAll( obj ){
+		 $(obj).parents( '.result_content' ).find('.add_tab').find("input[type='checkbox']").prop('checked',$(obj).prop('checked'));
+	}
+	//单行全选
+	function _chooseLine( obj ){
+		$(obj).parents( 'tr' ).next('tr').find('td').find("input[type='checkbox']").prop('checked',$(obj).prop('checked'));
+		if( $(obj).prop('checked') === false ){
+			$("#allcheckbox").prop( 'checked',false );
+		}
+	}
+	//单个选择
+	function _chooseSign( obj ){
+		if( $( obj ).prop( 'checked' ) === false ){
+			$("#allcheckbox").prop( 'checked',false );
+			$( obj ).parents('tr').prev( 'tr' ).find( 'th' ).find("input[type='checkbox']").prop( 'checked',false );
+		}
+	}
+</script>
+</html>

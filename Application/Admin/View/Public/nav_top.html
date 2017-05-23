@@ -1,0 +1,18 @@
+<div class="top_box">
+    <div class="top_left">
+        <div class="logo">
+            <img src="__PUBLIC__/Admin/image/logotp1.png" style="width:90%;" alt="">
+        </div>
+        <ul>
+            <li><a href="#" class="active">后台首页</a></li>
+            <li><a href="{:U('Home/Index/index')}">去前台</a></li>
+        </ul>
+    </div>
+    <div class="top_right">
+        <ul>
+            <li>管理员：{$_SESSION['auth']['username']}</li>
+            <li><a href="{:U('Login/changePwd')}" target="main">修改密码</a></li>
+            <li><a href="{:U('Login/logOut')}">退出</a></li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="__PUBLIC__/org/jquery.min.js"></script>
+    <script src="__PUBLIC__/org/hdjs/hdjs.min.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/org/hdjs/hdjs.css">
+    <link rel="stylesheet" href="__PUBLIC__/org/bootstrap.min.css"></head>
+<body>
+<div class="hd-menu-list">
+    <ul>
+        <li >
+            <a href="{:U( 'Admin/adminlist' )}">管理员角色列表</a>
+        </li>
+        <li class="active">
+            <a href="{:U( 'Admin/addadmingroup',array( 'admin_id'=>$adminUser['id'] ) )}">添加管理员角色</a>
+        </li>
+    </ul>
+</div>
+<form action="" method="post">
+    <input type="hidden" name="uid" value="{$adminUser['id']}">
+    <table class="hd-table hd-table-form hd-form">
+        <thead>
+        <tr>
+            <td colspan="2">添加新规则节点</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th class="hd-w200">管理员角色：</th>
+            <td>
+                {$adminUser['username']}
+            </td>
+        </tr>
+        <tr>
+            <th class="hd-w200 hd-h50">权限组选择：</th>
+            <td>
+
+                <select name="group_id" style="font-size:14px;">
+                    <?php foreach( $ruleGroup as $vo ):?>
+                    <option value="{$vo['id']}">{$vo['title']}</option>
+                    <?php endforeach;?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th class="hd-w200"></th>
+            <td>
+                <button type="submit" class="btn btn-success" style="border:0;">提交</button>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title></title>
+    <link href="__PUBLIC__/Admin/css/login.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" type="text/javascript" src="__PUBLIC__/Admin/js/jquery-1.7.2.min.js"></script>
+    <script>
+        var index=0;
+        $(function(){
+            var userAgent = navigator.userAgent.toLowerCase();
+            if($.browser.msie){
+                if($.browser.version="7.0" || $.browser.version=="6.0"){
+                    $("input:text").each(function(){
+                        if($(this).attr("class")=="log_input_a"){
+                            $(this).removeClass().addClass("log_input_a_7");
+                        }
+                        if($(this).attr("class")=="log_input_c"){
+                            $(this).removeClass().addClass("log_input_c_7");
+                        }
+                    });
+                    $("input:password").each(function(){
+                        $(this).removeClass().addClass("log_input_b_7");
+                    });
+                }
+            }
+            $(".linklist>ul>li").click(function(){
+                $(this).addClass("on_select").siblings().removeClass("on_select");
+                $(".linklist>ul>li>a").removeClass("hover");
+                $(this).find("a").addClass("hover");
+                index=$(".linklist>ul>li").index(this);
+                $(".formclass:eq("+index+")").show().siblings("div[class='formclass']").hide();
+            });
+
+            $(".btn").click(function(){
+                doCheckInput();
+            });
+        });
+
+        function doCheckInput(){
+            var issub=true;
+            var u_name=$(".formclass:eq("+index+")>form>ul>li>div[class='inputbg']>input").val();
+            var u_pwd=$(".formclass:eq("+index+")>form>ul>li>div[class='inputpwd']>input").val();
+            var u_regma=$(".formclass:eq("+index+")>form>ul>li>div[class='inputyzm']>input").val();
+
+            var u_info=$(".formclass:eq("+index+")>form>ul>li>span[class='usertip']");
+            var p_info=$(".formclass:eq("+index+")>form>ul>li>span[class='pwdtip']");
+            var r_info=$(".formclass:eq("+index+")>form>ul>li>span[class='regmatip']");
+
+
+            if(u_name==""){
+                u_info.show();
+                issub=false;
+            }
+            else{
+                u_info.hide();
+            }
+            if(u_pwd==""){
+                p_info.show();
+                issub=false;
+            }
+            else{
+                p_info.hide();
+            }
+            if(u_regma==""){
+                r_info.show();
+                issub=false;
+            }
+            else{
+                var regmareg=/^[0-9]/;
+                if(!regmareg.test(u_regma)){
+                    r_info.html("请输入正确的验证码!");
+                    r_info.show();
+                    issub=false;
+                }
+                else{
+                    r_info.html("请输入验证码");
+                    r_info.hide();
+                }
+            }
+
+            if(issub==true){
+                setTimeout(function(){$("form:eq("+index+")").submit();},0);
+            }
+        }
+        //判断登录才窗口
+        $(function(){
+            var agent=navigator.userAgent
+            if(agent.indexOf("Firefox")>0){
+                if(window.top === window.self){
+                }else{
+                    top.location.href="{:U('Login/login')}";
+                }
+                return false;
+            }
+            var browser=navigator.appName
+            var b_version=navigator.appVersion
+            var version=b_version.split(";");
+            var trim_Version=version[1].replace(/[ ]/g,"");
+            if(browser=="Microsoft Internet Explorer" && trim_Version=="MSIE8.0") {
+                if(window.top === window.self){
+                }else{
+                    top.location.href="{:U('Login/login')}";
+                }
+            }else{
+                if(!(window === window.top)){
+                    top.location.href="{:U('Login/login')}";
+                }
+            }
+        });
+    </script>
+</head>
+
+<body>
+<div class="layout">
+    <div id="mainlogin">
+        <p>
+
+        </p>
+        <p>
+            <img src="__PUBLIC__/Admin/image/title.gif" alt="独立控制面板">
+        </p>
+        <div class=" linklist nav"></div>
+        <form name="" method="post" action="">
+            <div class="mainlist">
+                <div class="formclass" id="div_host">
+
+                    <ul>
+                        <li>
+                            <label class="name" for="ftpname">系统用户名:</label>
+                            <div class="inputbg">
+                                <input name="username" type="text" class="log_input_a user" id="ftpname" value=""/>
+                            </div>
+                            <span class="usertip">请输入您的用户名</span>
+                        </li>
+                        <li>
+                            <label class="name" for="password">系统密码:</label>
+                            <div class="inputpwd">
+                                <input name="password" type="password" class="log_input_b pwd" id="password"/>
+                            </div>
+                            <span class="pwdtip">请输入您的密码</span>
+                        </li>
+                        <li>
+                          <label class="name" for="regma">验证码:</label>
+                          <div class="inputyzm">
+                            <input name="code" type="text" class="log_input_c yzm" id="regma" style="text-align: center;"/>
+                          </div>
+                          <span class="img" style="margin-left:15px;padding:0px;box-shadow: 0px 0px 5px #000;">
+                            <img src="{:U('Login/code')}" id="code_2" width="200" height="40">
+                          </span>
+                        </li>
+                    </ul>
+
+                </div>
+
+
+                <div class="logbutton">
+                    <p>
+                        <button  class="btn" type="submit" style="border:0;"></button>
+                    </p>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script  type="text/javascript">
+    $("#code_2").click(function(){
+        $(this).attr("src","{:U('Login/code')}");
+    });
+</script>
+</body>
+</html>

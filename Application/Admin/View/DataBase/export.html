@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <include file="Public:header"/>
+</head>
+<body>
+
+<!--结果集标题与导航组件 开始-->
+<div class="result_wrap">
+    <div class="result_title">
+        <h3>快捷操作</h3>
+    </div>
+    <div class="result_content">
+        <div class="short_wrap">
+            <a href="{:U( 'DataBase/export' )}"><i class="fa fa-cubes"></i>数据备份</a>
+            <a href="{:U( 'DataBase/import' )}"><i class="fa fa-retweet"></i>数据还原</a>
+        </div>
+    </div>
+</div>
+<!--结果集标题与导航组件 结束-->
+
+<!--结果页快捷搜索框 开始-->
+<div class="search_wrap">
+	<table class="search_tab">
+		<tr>
+			<th></th>
+			<td>
+				<div style="border:1px solid #892E65;background:#892E65;">
+					<a id="exportbtn" href="javascript:;" onclick="_checkAll()" style="color:#fff;text-decoration: none;padding:0 10px;"><i class="fa fa-cubes"></i> 数据库备份</a>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+<!--结果页快捷搜索框 结束-->
+
+<div class="result_wrap">
+    <!--搜索结果页面 列表 开始-->
+    <form action="#" method="post">
+        <div class="result_wrap" style="border:0">
+            <div class="result_content">
+                <table class="list_tab">
+                    <tr>
+                        <th class="tc" width="5%">
+							<input type="checkbox">
+						</th>
+                        <th>表名</th>
+						<th>说明</th>
+                        <th>数据量</th>
+                        <th>数据大小</th>
+                        <th>创建时间</th>
+						<th>操作</th>
+                    </tr>
+                    <?php foreach( $list as $vo ):?>
+                    <tr>
+                        <td class="tc">
+							<input type="checkbox" name="tables[]" value="{$vo['name']}">
+						</td>
+                        <td>{$vo['name']}</td>
+						<td>{$vo['comment']|default="无记录"}</td>
+						<td class="hidden-sm hidden-xs">【{$vo['rows']}】 条记录 </td>
+						<td class="hidden-sm hidden-xs">{$vo['data_length']|format_bytes}</td>
+						<td class="hidden-sm hidden-xs">{$vo['create_time']}</td>
+                        <td class="done">
+                            <a href="{:U( 'exportsql',array( 'table'=>$vo['name'] ) )}" title="备份表"><i class="fa fa-download"></i></a>
+                        </td>
+                    </tr>
+                    <?php endforeach;?>
+                </table>
+            </div>
+        </div>
+    </form>
+    <!--搜索结果页面 列表 结束-->
+</div>
+
+
+</body>
+<script>
+	$( function() {
+		$( ".list_tab" ).find( 'th' ).find( "input[type='checkbox']" ).click();
+	} );
+	//检查是否有选中的
+	function _checkAll() {
+		var tables = $( ".list_tab" ).find( 'td' ).find('[type=checkbox]:checked').val();
+		if ( undefined === tables ) {
+			layer.msg( "请选择需要备份的表");
+			return false;
+		}
+        $( "#exportbtn" ).text("正在发送备份请求...");
+        $.post("{:U( 'backupSql' )}",$("form").serialize(),function (data) {
+                if (data.status) {
+                    tables = data.tables;
+                    $( "#exportbtn" ).text(data.info + "开始备份，请不要关闭本页面！");
+                    backup(data.tab);
+                    window.onbeforeunload = function () {
+                        return "正在备份数据库，请不要关闭！"
+                    }
+                } else {
+                    layer.alert(data.info, {icon: 5});
+                    $( "#exportbtn" ).text("立即备份");
+                }
+            },
+            "json"
+        );
+        return false;
+	}
+
+    function backup(tab, status) {
+		var num = parseInt( tab.id ) + 1;
+		_showMsg(num);
+        $.get("{:U( 'backupSql' )}", tab, function (e) {
+            if (e.status) {
+                if (!$.isPlainObject(e.tab)) {
+                    $( "#exportbtn" ).text("备份完成，点击重新备份");
+                    window.onbeforeunload = null;
+                }
+				backup(e.tab, tab.id != e.tab.id);
+            } else {
+				layer.alert(data.info, {icon: 5});
+               	$( "#exportbtn" ).text("立即备份");
+            }
+        }, "json");
+
+    }
+	function _showMsg( num ){
+		$( ".list_tab tr" ).eq( num ).find( '.done' ).find('i').removeClass( 'fa-download' );
+		$( ".list_tab tr" ).eq( num ).find( '.done' ).find('i').addClass( 'fa-check-circle-o' );
+		$( ".list_tab tr" ).eq( num ).find( '.done' ).find('i').text( " 备份完成！" );
+		$( ".list_tab tr" ).eq( num ).find( '.done' ).find('i').css( {'color':'green','font-size':'18px'} );
+	}
+</script>
+
+</html>

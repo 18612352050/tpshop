@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <include file="Public:header"/>
+</head>
+<body>
+
+<!--结果集标题与导航组件 开始-->
+<div class="result_wrap">
+    <div class="result_title">
+        <h3>快捷操作</h3>
+    </div>
+    <div class="result_content">
+        <div class="short_wrap">
+            <a href="{:U( 'Admin/adminlist' )}"><i class="fa fa-user"></i>管理员列表</a>
+            <a href="{:U( 'Group/grouplist' )}"><i class="fa fa-group"></i>用户权限组</a>
+            <a href="{:U( 'Group/addrule' )}"><i class="fa fa-cogs"></i>权限管理</a>
+        </div>
+    </div>
+</div>
+<!--结果集标题与导航组件 结束-->
+
+<!--结果页快捷搜索框 开始-->
+<div class="search_wrap">
+        <table class="search_tab">
+            <tr>
+                <th></th>
+                <td>
+                    <div style="border:1px solid #892E65;background:#892E65;">
+                        <a href="{:U( 'Group/addRuleGroup' )}" style="color:#fff;text-decoration: none;padding:0 10px;"><i class="fa fa-bolt"></i> 添加用户组</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+</div>
+<!--结果页快捷搜索框 结束-->
+
+<div class="result_wrap">
+    <!--搜索结果页面 列表 开始-->
+    <form action="" method="post">
+        <div class="result_wrap" style="border:0">
+            <div class="result_content">
+                <table class="list_tab">
+                    <tr>
+                        <th class="tc" width="5%">ID</th>
+                        <th>用户组名</th>
+                        <th>添加时间</th>
+                        <th>修改时间</th>
+                        <th>操作</th>
+                    </tr>
+                    <?php foreach( $groups as $vo ):?>
+                    <tr>
+                        <td class="tc">{$vo['id']}</td>
+                        <td>
+                            {$vo['title']}
+                        </td>
+                        <td>
+                            {$vo['addtime']|default=""|date="Y-m-d",###}
+                        </td>
+                        <td>
+                            {$vo['edittime']|default=""|date="Y-m-d",###}
+                        </td>
+                        <td>
+                            <a href="{:U( 'setGroup',array( 'group_id'=>$vo['id'] ) )}">设置</a>
+                            <a href="{:U( 'editGroup',array( 'group_id'=>$vo['id'] ) )}">修改</a>
+                            <a href="javascript:del({$vo['id']});">删除</a>
+                        </td>
+                    </tr>
+                    <?php endforeach;?>
+                </table>
+            </div>
+        </div>
+    </form>
+    <!--搜索结果页面 列表 结束-->
+</div>
+
+
+</body>
+<script>
+    function del(id) {
+        var id = id;
+        layer.confirm('你确定删除吗', {
+            btn: ['确认', '取消'] //按钮
+        }, function () {
+            $.post("{:U( 'Group/delGroup' )}", {'id': id}, function (e) {
+                if (e.code == 0) {
+                    layer.msg(e.msg, {icon: 1});
+                    setTimeout(function () {
+                        location.href = location.href;
+                    }, 1000)
+
+                } else {
+                    if (e.info) {
+                        layer.alert(e.info, {icon: 2});
+                    } else {
+                        layer.alert(e.msg, {icon: 2});
+                    }
+                }
+            });
+        });
+    }
+</script>
+
+</html>
